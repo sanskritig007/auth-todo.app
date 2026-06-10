@@ -19,6 +19,10 @@
       "type": "boolean",
       "default": false
     },
+    "isCompleted": {
+      "type": "boolean",
+      "default": false
+    },
     "users_permissions_user": {
       "type": "relation",
       "relation": "manyToOne",

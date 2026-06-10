@@ -1,26 +1,29 @@
+//signin
 "use client";
 
+
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 export default function Signin() {
+  const router = useRouter();
   const [identifier, setIdentifier] = useState("");
   const [password, setPassword] = useState("");
 
-  const handleLogin = async () => {
+  const handleLogin = async (event) => {
+    event.preventDefault();
+
     try {
-      const response = await fetch(
-        "http://localhost:1337/api/auth/local",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            identifier,
-            password,
-          }),
-        }
-      );
+      const response = await fetch("http://localhost:1337/api/auth/local", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          identifier,
+          password,
+        }),
+      });
 
       const data = await response.json();
 
@@ -29,6 +32,7 @@ export default function Signin() {
         localStorage.setItem("user", JSON.stringify(data.user));
 
         alert("Login Successful");
+        router.push("/dashboard");
       } else {
         alert(data.error?.message || "Login Failed");
       }
@@ -39,30 +43,83 @@ export default function Signin() {
   };
 
   return (
-    <div>
-      <h1>Sign In</h1>
+    <main style={pageStyle}>
+      <form style={cardStyle} onSubmit={handleLogin}>
+        <h1 style={headingStyle}>Sign In</h1>
 
-      <input
-        type="text"
-        placeholder="Email or Username"
-        value={identifier}
-        onChange={(e) => setIdentifier(e.target.value)}
-      />
+        <input
+          style={inputStyle}
+          type="text"
+          placeholder="Email or Username"
+          value={identifier}
+          onChange={(event) => setIdentifier(event.target.value)}
+        />
 
-      <br /><br />
+        <input
+          style={inputStyle}
+          type="password"
+          placeholder="Password"
+          value={password}
+          onChange={(event) => setPassword(event.target.value)}
+        />
 
-      <input
-        type="password"
-        placeholder="Password"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-      />
-
-      <br /><br />
-
-      <button onClick={handleLogin}>
-        Login
-      </button>
-    </div>
+        <button style={buttonStyle} type="submit">
+          Login
+        </button>
+      </form>
+    </main>
   );
 }
+
+const pageStyle = {
+  minHeight: "100vh",
+  width: "100%",
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+  background: "#020617",
+  color: "white",
+  padding: "20px",
+};
+
+const cardStyle = {
+  width: "100%",
+  maxWidth: "420px",
+  display: "flex",
+  flexDirection: "column",
+  gap: "16px",
+  background: "#1e293b",
+  borderRadius: "16px",
+  padding: "32px",
+  pointerEvents: "auto",
+  position: "relative",
+  zIndex: 1,
+};
+
+const headingStyle = {
+  fontSize: "32px",
+  fontWeight: "700",
+  marginBottom: "8px",
+};
+
+const inputStyle = {
+  width: "100%",
+  background: "#0f172a",
+  color: "white",
+  border: "1px solid #475569",
+  borderRadius: "8px",
+  padding: "12px 14px",
+  outline: "none",
+  pointerEvents: "auto",
+};
+
+const buttonStyle = {
+  width: "100%",
+  background: "#3b82f6",
+  color: "white",
+  border: "none",
+  borderRadius: "8px",
+  padding: "12px 18px",
+  cursor: "pointer",
+  pointerEvents: "auto",
+};
