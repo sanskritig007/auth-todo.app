@@ -26,15 +26,13 @@ export default function Signup() {
 
       const data = await response.json();
 
-      console.log(data);
-
       if (response.ok) {
         alert("Registration Successful");
       } else {
         alert(data.error?.message || "Registration Failed");
       }
     } catch (error) {
-      console.error(error);
+      console.log(error);
       alert("Something went wrong");
     }
   };
@@ -50,8 +48,7 @@ export default function Signup() {
         onChange={(e) => setUsername(e.target.value)}
       />
 
-      <br />
-      <br />
+      <br /><br />
 
       <input
         type="email"
@@ -60,8 +57,7 @@ export default function Signup() {
         onChange={(e) => setEmail(e.target.value)}
       />
 
-      <br />
-      <br />
+      <br /><br />
 
       <input
         type="password"
@@ -70,8 +66,7 @@ export default function Signup() {
         onChange={(e) => setPassword(e.target.value)}
       />
 
-      <br />
-      <br />
+      <br /><br />
 
       <button onClick={handleSignup}>
         Register

@@ -49,8 +49,7 @@ export default function Signin() {
         onChange={(e) => setIdentifier(e.target.value)}
       />
 
-      <br />
-      <br />
+      <br /><br />
 
       <input
         type="password"
@@ -59,8 +58,7 @@ export default function Signin() {
         onChange={(e) => setPassword(e.target.value)}
       />
 
-      <br />
-      <br />
+      <br /><br />
 
       <button onClick={handleLogin}>
         Login
