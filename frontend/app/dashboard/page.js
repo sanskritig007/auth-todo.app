@@ -141,38 +141,33 @@ export default function Dashboard() {
   };
 
   const handleDeleteTodo = async (todo) => {
-    try {
-      const token = localStorage.getItem("jwt");
+  try {
+    const token = localStorage.getItem("jwt");
 
-      if (!token) {
-        alert("Please login first");
-        router.push("/signIn");
-        return;
+    const response = await fetch(
+      `http://localhost:1337/api/todos/${todo.documentId}`,
+      {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       }
+    );
 
-      const response = await fetch(
-        `http://localhost:1337/api/todos/${todo.documentId}`,
-        {
-          method: "DELETE",
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+    console.log("DELETE STATUS:", response.status);
 
-      const data = await response.json();
+    const data = await response.json();
+    console.log("DELETE RESPONSE:", data);
 
-      if (response.ok) {
-        fetchTodos();
-      } else {
-        alert(data.error?.message || "Failed to delete todo");
-      }
-    } catch (error) {
-      console.log(error);
-      alert("Something went wrong");
+    if (response.ok) {
+      await fetchTodos();
+    } else {
+      alert(data.error?.message || "Failed to delete todo");
     }
-  };
-
+  } catch (error) {
+    console.log(error);
+  }
+};
   return (
     <main
       style={{
